@@ -1,4 +1,6 @@
+import { string } from "better-auth";
 import { TimeSlot, Tutor } from "../../../generated/prisma/client";
+import { TutorWhereInput } from "../../../generated/prisma/models";
 import { prisma } from "../../lib/prisma";
 
 
@@ -108,29 +110,88 @@ const updateTimeSlot = async (
 
 // get all tutor
 
-const getAllTutors = async (
-    payload: {
-        search?: string |number| undefined,
+const getAllTutors = async (payload: {
+    search?: string
+    rating?: number
+    price?: number
+    category?: string
+    isFeatured?: boolean
+    
+}) => {
+
+    const andConditions: TutorWhereInput[]=[]
+
+
+    if (payload.search) {
+        andConditions.push({
+            subject: {
+                contains: payload.search,
+                mode: "insensitive"
+            }
+        })
     }
 
-) => {
 
-const {search} =payload;
-const searchCondition =[];
+    if (typeof payload.rating === "number") {
+        andConditions.push({
+            avg_rating: {
+                equals: payload.rating
+            }
+        })
+    }
 
-if(search){
-    const searchString = String(search);
-    const SearchNumber = Number(search);
+
+    if (typeof payload.price === "number") {
+        andConditions.push({
+            course_price: {
+                equals: payload.price
+            }
+        })
+    }
+
+    if (typeof payload.isFeatured === 'boolean') {
+        const { isFeatured } = payload
+        andConditions.push(
+            {
+                isFeatured: isFeatured
+            }
+        )
+    }
+
+return prisma.tutor.findMany(
+    {
+        where:{
+            AND:andConditions
+        }
+    }
+)
+    
+};
+
+
+const getTutorById = async (tutorId:string) => {
+    return prisma.tutor.findUnique(
+        {
+            where:{
+                id: tutorId
+            },
+            include:{
+                user:{
+                    select:{
+                        name:true
+                    }
+                },
+                reviews:true
+            }
+        }
+    )
 }
-
-   
-}
-
 
 export const tutorService = {
     createTutorProfile,
     updateTutorProfile,
     createTimeSlot,
     updateTimeSlot,
-    getAllTutors
+    getAllTutors,
+    getTutorById
 }

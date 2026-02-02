@@ -9,6 +9,7 @@ const router = Router()
 // putlic tutor route
 
 router.get('/', tutorController.getAllTutors)
+router.get('/:tutorId', tutorController.getTutorById)
 
 // private route for tutor
 router.post('/', auth(UserRole.TUTOR), tutorController.createTutorProfile)

@@ -112,14 +112,60 @@ const updateTimeSlot = async (req: Request, res: Response, next: NextFunction) =
 const getAllTutors = async (req: Request, res: Response, next: NextFunction) => {
     try {
 
-        const {search} = req.query
+        const { search, rating, price, category, isFeatured, userId } = req.query;
+
+        const payload: {
+            search?: string
+            rating?: number
+            price?: number
+            category?: string
+            isFeatured?: boolean
+            userId?: string
+        } = {}
 
 
-        const searchString = typeof search === 'string' ? search : undefined
 
-        const result = await tutorService.getAllTutors(
-            {search:searchString}
+        if (typeof search === "string") {
+            payload.search = search
+        }
+
+        if (typeof rating === "string" && !isNaN(Number(rating))) {
+            payload.rating = Number(rating)
+        }
+
+         if (typeof price === "string" && !isNaN(Number(price))) {
+            payload.price = Number(price)
+        }
+         if (typeof category === "string") {
+            payload.category = category
+        }
+        if (typeof isFeatured === "string") {
+            payload.isFeatured = isFeatured === "true"
+        }
+
+        const result = await tutorService.getAllTutors(payload)
+        res.status(201).json(result)
+
+    } catch (error: any) {
+        res.status(400).json(
+            {
+                success: false,
+                message: error.message,
+                error: error
+            }
         )
+    }
+}
+
+
+// get tutor by id
+
+const getTutorById = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
+      
+const {tutorId} = req.params
+        const result = await tutorService.getTutorById(tutorId as string)
         res.status(201).json(result)
 
     } catch (error: any) {
@@ -135,11 +181,11 @@ const getAllTutors = async (req: Request, res: Response, next: NextFunction) => 
 
 
 
-
 export const tutorController = {
     createTutorProfile,
     updateTutorProfile,
     createTimeSlot,
     updateTimeSlot,
-    getAllTutors
+    getAllTutors,
+    getTutorById
 }

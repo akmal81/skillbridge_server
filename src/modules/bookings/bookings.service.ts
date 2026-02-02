@@ -1,0 +1,67 @@
+
+import { prisma } from "../../lib/prisma"
+
+const createBooking = async (
+    payload: {studentId: string, tutorId: string, timeSlotId:string}
+) => {
+
+   const result =  await prisma.bookings.create(
+        {
+            data:{
+                ...payload
+            }
+        }
+    )
+
+
+    if (result) {
+        await prisma.timeSlot.update(
+            {
+                where: {
+                    id: payload.timeSlotId
+                },
+                data: {
+                    isBooked: true,
+                    availability:false
+                }
+            }
+        )
+    }
+return result
+}
+
+
+const getBookingsStudentId = async (studentId:string)=>{
+
+    const now = new Date()
+   
+   const allBookings= await prisma.bookings.findMany({
+        where:{
+            studentId:studentId
+        },
+        include:{
+            timeSlot:true,
+            tutor:true
+        },
+        orderBy:{
+            timeSlot:{
+                date:"asc"
+            }
+        }
+    })
+
+
+    const upcoming = allBookings.filter(booking => new Date(booking.timeSlot.date) >= now);
+    const past = allBookings.filter(booking => new Date(booking.timeSlot.date) < now);
+
+    return{
+        allBookings,
+        upcoming,
+    }
+}
+
+
+export const bookingService = {
+    createBooking,
+    getBookingsStudentId
+}

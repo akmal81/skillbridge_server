@@ -2,9 +2,9 @@ import express, { Application } from "express";
 import  cors  from "cors";
 import { toNodeHandler } from "better-auth/node";
 import { auth } from "./lib/auth";
-import { UserRole } from "./middleWare/auth";
 import { adminRoutes } from "./modules/admin/admin.router";
 import { tutorRoutes } from "./modules/tutor/tutor.router";
+import { bookingRoutes } from "./modules/bookings/booking.router";
 
 
 const app:Application = express();
@@ -25,6 +25,10 @@ app.all("/api/auth/*splat", toNodeHandler(auth), adminRoutes);
 app.use('/api/v1/tutor', tutorRoutes)
 
 // student api
+
+// booking
+
+app.use('/api/v1/bookings', bookingRoutes)
 
 // admin api
 
