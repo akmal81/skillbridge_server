@@ -24,12 +24,11 @@ model User {
   sessions      Session[]
   accounts      Account[]
 
-  role     String     @default("student")
+  role     String     @default("STUDENT")
   tutor    Tutor? //one to one with tutor
   reviews  Reviews[] //one to many with reviwes student
   bookings Bookings[] //one to many with reviwes bookings
 
-  isTutor Boolean  @default(false)
   isBan Boolean? @default(false)
 
   @@unique([email])
@@ -112,7 +111,7 @@ model Tutor {
   course_price Int     @default(500)
   avg_rating   Int     @default(0)
   isFeatured   Boolean @default(false)
-  availability Boolean @default(true)
+  availability Boolean @default(true)    //not in use
 
   createdAt DateTime   @default(now())
   updatedAt DateTime   @default(now())
@@ -133,7 +132,8 @@ model TimeSlot {
   startTime DateTime
   endTime   DateTime
   isBooked  Boolean   @default(false)
-  bookings  Bookings? // one to one with bookings
+  availability Boolean   @default(true)
+  bookings  Bookings[] // one to one with bookings
 
   @@index([tutorId])
   @@map("time_slot")
@@ -158,7 +158,7 @@ model Bookings {
   student    User          @relation(fields: [studentId], references: [id])
   tutorId    String //many to one with tutor
   tutor      Tutor         @relation(fields: [tutorId], references: [id])
-  timeSlotId String        @unique //one to one with timeslot
+  timeSlotId String         //one to one with timeslot
   timeSlot   TimeSlot      @relation(fields: [timeSlotId], references: [id])
   status     BookingStatus @default(PENDING)
 }

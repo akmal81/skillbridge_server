@@ -16,11 +16,6 @@ export const auth = betterAuth({
                 defaultValue: "student",
                 required: true
             },
-            isTutor: {
-                type: "boolean",
-                defaultValue: false,
-                required: true
-            },
             isBan: {
                 type: "boolean",
                 defaultValue: false,
