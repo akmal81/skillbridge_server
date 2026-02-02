@@ -24,7 +24,13 @@ model User {
   sessions      Session[]
   accounts      Account[]
 
-  role String @default("student")
+  role     String     @default("student")
+  tutor    Tutor? //one to one with tutor
+  reviews  Reviews[] //one to many with reviwes student
+  bookings Bookings[] //one to many with reviwes bookings
+
+  isTutor Boolean  @default(false)
+  isBan Boolean? @default(false)
 
   @@unique([email])
   @@map("user")
@@ -76,4 +82,90 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+model Category {
+  id          String  @id @default(uuid())
+  catName     String
+  description String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  tutors    Tutor[]
+
+  @@map("category")
+}
+
+model Tutor {
+  id String @id @default(uuid())
+
+  userId String @unique //one to one with tutor
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  categoryId String //one to many with category
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  bio          String
+  image        String?
+  subject      String
+  experience   Int     @default(0)
+  course_price Int     @default(500)
+  avg_rating   Int     @default(0)
+  isFeatured   Boolean @default(false)
+  availability Boolean @default(true)
+
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @default(now())
+  timeSlots TimeSlot[] //one to many with time slot
+  reviews   Reviews[] //one to many with reviews
+  bookings  Bookings[] //one to many with boookings
+
+  @@index([categoryId])
+  @@map("tutor")
+}
+
+model TimeSlot {
+  id      String @id @default(uuid())
+  tutorId String
+  tutor   Tutor  @relation(fields: [tutorId], references: [id], onDelete: Cascade)
+
+  date      DateTime
+  startTime DateTime
+  endTime   DateTime
+  isBooked  Boolean   @default(false)
+  bookings  Bookings? // one to one with bookings
+
+  @@index([tutorId])
+  @@map("time_slot")
+}
+
+model Reviews {
+  id        String @id @default(uuid())
+  studentId String //many to one with user as student
+  student   User   @relation(fields: [studentId], references: [id])
+  tutorId   String //many to one with tutor
+  tutor     Tutor  @relation(fields: [tutorId], references: [id])
+  review    String
+  rating    Int
+
+  @@index([studentId, tutorId])
+  @@map("reviews")
+}
+
+model Bookings {
+  id         String        @id @default(uuid())
+  studentId  String //many to one with user as student id
+  student    User          @relation(fields: [studentId], references: [id])
+  tutorId    String //many to one with tutor
+  tutor      Tutor         @relation(fields: [tutorId], references: [id])
+  timeSlotId String        @unique //one to one with timeslot
+  timeSlot   TimeSlot      @relation(fields: [timeSlotId], references: [id])
+  status     BookingStatus @default(PENDING)
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
 }
