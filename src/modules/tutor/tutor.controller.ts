@@ -133,10 +133,10 @@ const getAllTutors = async (req: Request, res: Response, next: NextFunction) => 
             payload.rating = Number(rating)
         }
 
-         if (typeof price === "string" && !isNaN(Number(price))) {
+        if (typeof price === "string" && !isNaN(Number(price))) {
             payload.price = Number(price)
         }
-         if (typeof category === "string") {
+        if (typeof category === "string") {
             payload.category = category
         }
         if (typeof isFeatured === "string") {
@@ -163,9 +163,47 @@ const getAllTutors = async (req: Request, res: Response, next: NextFunction) => 
 const getTutorById = async (req: Request, res: Response, next: NextFunction) => {
     try {
 
-      
-const {tutorId} = req.params
+
+        const { tutorId } = req.params
         const result = await tutorService.getTutorById(tutorId as string)
+        res.status(201).json(result)
+
+    } catch (error: any) {
+        res.status(400).json(
+            {
+                success: false,
+                message: error.message,
+                error: error
+            }
+        )
+    }
+}
+
+
+const getTutorByCategoryId = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
+       
+        const { categoryId } = req.params
+        console.log(categoryId)
+        const result = await tutorService.getTutorByCategoryId(categoryId as string)
+        res.status(201).json(result)
+
+    } catch (error: any) {
+        res.status(400).json(
+            {
+                success: false,
+                message: error.message,
+                error: error
+            }
+        )
+    }
+}
+
+//! Landing page with featured tutors
+const getTutorFeatured = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const result = await tutorService.getTutorFeatured()
         res.status(201).json(result)
 
     } catch (error: any) {
@@ -187,5 +225,7 @@ export const tutorController = {
     createTimeSlot,
     updateTimeSlot,
     getAllTutors,
-    getTutorById
+    getTutorById,
+    getTutorByCategoryId,
+    getTutorFeatured
 }

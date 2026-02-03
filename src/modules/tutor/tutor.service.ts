@@ -109,6 +109,7 @@ const updateTimeSlot = async (
 
 
 // get all tutor
+//? Browse and search tutors by subject, rating, and price
 
 const getAllTutors = async (payload: {
     search?: string
@@ -168,7 +169,7 @@ return prisma.tutor.findMany(
     
 };
 
-
+// * Filter tutors by tutor id
 const getTutorById = async (tutorId:string) => {
     return prisma.tutor.findUnique(
         {
@@ -187,11 +188,38 @@ const getTutorById = async (tutorId:string) => {
     )
 }
 
+// * Filter tutors by category
+const getTutorByCategoryId = async (categoryId:string) => {
+    return await prisma.tutor.findMany(
+        {
+            where:{
+                categoryId: categoryId
+            }
+        }
+    )
+}
+
+
+//* Landing page with featured tutors
+const getTutorFeatured=async function () {
+    return await prisma.tutor.findMany(
+        {
+            where:{
+                isFeatured:true
+            }
+        }
+    )
+}
+
+
+
 export const tutorService = {
     createTutorProfile,
     updateTutorProfile,
     createTimeSlot,
     updateTimeSlot,
     getAllTutors,
-    getTutorById
+    getTutorById,
+    getTutorByCategoryId,
+    getTutorFeatured
 }
