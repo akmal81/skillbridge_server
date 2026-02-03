@@ -61,9 +61,9 @@ const getBookingsStudentId = async (req: Request, res: Response, next: NextFunct
             }
          
 
-const {studentId} = req.params
+const {tutorId} = req.params
         const result = await bookingService.getBookingsStudentId(
-           studentId as string
+           tutorId as string
         )
 
         res.status(201).json(result)

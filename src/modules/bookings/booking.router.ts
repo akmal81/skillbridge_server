@@ -4,7 +4,8 @@ import { bookingController } from "./booking.controller";
 
 const router = Router()
 
-router.get('/:studentId', auth(UserRole.STUDENT), bookingController.getBookingsStudentId)
+router.get('/student/:studentId', auth(UserRole.STUDENT), bookingController.getBookingsStudentId)
+router.get('/tutor/:tutorId', auth(UserRole.TUTOR), bookingController.getBookingsStudentId)
 router.post('/', auth(UserRole.STUDENT), bookingController.createBooking)
 
 

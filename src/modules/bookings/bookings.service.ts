@@ -41,7 +41,11 @@ const getBookingsStudentId = async (studentId:string)=>{
         },
         include:{
             timeSlot:true,
-            tutor:true
+            tutor:{
+                include:{
+                    user:true
+                }
+            }
         },
         orderBy:{
             timeSlot:{
@@ -55,13 +59,44 @@ const getBookingsStudentId = async (studentId:string)=>{
     const past = allBookings.filter(booking => new Date(booking.timeSlot.date) < now);
 
     return{
-        allBookings,
+       
         upcoming,
+        past
+    }
+}
+const getBookingsTutorId = async (tutorId:string)=>{
+
+    const now = new Date()
+   
+   const allBookings= await prisma.bookings.findMany({
+        where:{
+            tutorId:tutorId
+        },
+        include:{
+            timeSlot:true,
+            student: true,
+        },
+        orderBy:{
+            timeSlot:{
+                date:"asc"
+            }
+        }
+    })
+
+
+    const upcoming = allBookings.filter(booking => new Date(booking.timeSlot.date) >= now);
+    const past = allBookings.filter(booking => new Date(booking.timeSlot.date) < now);
+
+    return{
+       
+        upcoming,
+        past
     }
 }
 
 
 export const bookingService = {
     createBooking,
-    getBookingsStudentId
+    getBookingsStudentId,
+    getBookingsTutorId
 }
