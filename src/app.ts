@@ -40,7 +40,7 @@ app.use('/api/v1/reviews', reviewsRoutes)
 
 // admin api
 
-app.use('/api/v1/categories', adminRoutes)
+app.use('/api/v1/admin', adminRoutes)
 
 
 app.get('/', (req, res)=>{

@@ -21,6 +21,12 @@ const createCategory = async (req: Request, res: Response, next: NextFunction) =
     }
 }
 
+
+
+
+
+
+
 const deleteCagegory = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const categoryId = req.params.categoryId
@@ -38,7 +44,66 @@ const deleteCagegory = async (req: Request, res: Response, next: NextFunction) =
     }
 }
 
+
+
+// get all user
+const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        
+          const result = await adminService.getAllUsers()
+        res.status(201).json(result)
+        
+    } catch (error:any) {
+         res.status(400).json(
+           { 
+            success:false,
+            message:error.message,
+            error: error
+        }
+        )
+    }
+}
+
+// bann user
+const banUnban = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        
+          const result = await adminService.banUnban(req.params.id as string)
+        res.status(201).json(result)
+        
+    } catch (error:any) {
+         res.status(400).json(
+           { 
+            success:false,
+            message:error.message,
+            error: error
+        }
+        )
+    }
+}
+
+
+const getAllbookings = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        
+          const result = await adminService.getAllbookings()
+        res.status(201).json(result)
+        
+    } catch (error:any) {
+         res.status(400).json(
+           { 
+            success:false,
+            message:error.message,
+            error: error
+        }
+        )
+    }
+}
+
 export const adminController = {
     createCategory,
-    deleteCagegory
+    deleteCagegory,
+    getAllUsers,
+    banUnban,
+    getAllbookings
 }

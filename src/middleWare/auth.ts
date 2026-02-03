@@ -4,7 +4,7 @@ import { auth as betterauth } from "../lib/auth"
 
 export enum UserRole {
     STUDENT = "STUDENT",
-    TUTOR="TUTOR",
+    TUTOR = "TUTOR",
     ADMIN = "ADMIN"
 }
 
@@ -16,7 +16,8 @@ declare global {
                 email: string;
                 name: string;
                 role: string;
-               
+                isBan: boolean
+
             }
         }
     }
@@ -37,14 +38,24 @@ const auth = (...roles: UserRole[]) => {
                     message: "You are not auhorized"
                 })
             }
-           
+
 
             req.user = {
                 id: session.user.id,
                 email: session.user.email,
                 name: session.user.name,
                 role: session.user.role as string,
-                
+                isBan: session.user.isBan as boolean
+
+            }
+
+// if the user is bann 
+
+            if (req.user.isBan === true) {
+                return res.status(401).json({
+                    success: false,
+                    message: "Forbidden!!! You are bann Please contact with admin"
+                })
             }
 
             if (roles.length && !roles.includes(req.user.role as UserRole)) {
