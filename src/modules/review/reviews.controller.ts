@@ -30,6 +30,42 @@ const createReview = async (req:Request, res:Response) => {
 }
 
 
+
+const getReviewByTutorId = async (req:Request, res:Response) => {
+
+     try {
+          const user = req.user
+
+    if (!user) {
+        res.status(401).json(
+            {
+                message:"Please login first"
+            }
+        )
+    }
+ 
+    const {tutorId} = req.params 
+        
+
+    const result  = await reviewsService.getReviewByTutorId(tutorId as string)
+    
+            res.status(201).json(result)
+        } catch (error: any) {
+            res.status(400).json(
+                {
+                    success: false,
+                    message: error.message,
+                    error: error
+                }
+            )
+        }
+}
+
+
+
+
+
 export const reviewsController = {
-    createReview
+    createReview,
+    getReviewByTutorId
 }

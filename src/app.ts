@@ -5,7 +5,8 @@ import { auth } from "./lib/auth";
 import { adminRoutes } from "./modules/admin/admin.router";
 import { tutorRoutes } from "./modules/tutor/tutor.router";
 import { bookingRoutes } from "./modules/bookings/booking.router";
-import { reviewsRoutes } from "./modules/students/reviews.router";
+import { reviewsRoutes } from "./modules/review/reviews.router";
+import { studentsRoutes } from "./modules/students/student.router";
 
 
 const app:Application = express();
@@ -26,6 +27,8 @@ app.all("/api/auth/*splat", toNodeHandler(auth), adminRoutes);
 app.use('/api/v1/tutor', tutorRoutes)
 
 // student api
+
+app.use('/api/v1/students', studentsRoutes)
 
 // booking
 

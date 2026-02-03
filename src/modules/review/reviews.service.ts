@@ -65,7 +65,18 @@ return {newResult, status}
 return result
     
 }
+const getReviewByTutorId= async (tutorId:string) => {
 
+    return await prisma.reviews.findMany(
+        {
+            where:{
+                tutorId
+            }
+        }
+    )
+    
+}
 export const reviewsService ={
-    createReview
+    createReview,
+    getReviewByTutorId
 }

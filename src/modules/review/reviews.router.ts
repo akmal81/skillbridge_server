@@ -4,7 +4,7 @@ import { reviewsController } from "./reviews.controller";
 
 const router =Router();
 // tutor see rating and reviews
-router.get('/', auth(UserRole.TUTOR), reviewsController.createReview)
+router.get('/:tutorId', auth(UserRole.TUTOR), reviewsController.getReviewByTutorId)
 
 
 // student can post or create review will update the tutor avg_rating is booking is completed
