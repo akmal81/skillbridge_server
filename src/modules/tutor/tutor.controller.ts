@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 import { tutorService } from "./tutor.service"
+import { success } from "better-auth"
 
 
 const createTutorProfile = async (req: Request, res: Response, next: NextFunction) => {
@@ -19,11 +20,7 @@ const createTutorProfile = async (req: Request, res: Response, next: NextFunctio
 
     } catch (error: any) {
         res.status(400).json(
-            {
-                success: false,
-                message: error.message,
-                error: error
-            }
+           next(error)
         )
     }
 }
@@ -47,11 +44,7 @@ const updateTutorProfile = async (req: Request, res: Response, next: NextFunctio
 
     } catch (error: any) {
         res.status(400).json(
-            {
-                success: false,
-                message: error.message,
-                error: error
-            }
+           next(error)
         )
     }
 }
@@ -144,7 +137,29 @@ const getAllTutors = async (req: Request, res: Response, next: NextFunction) => 
         }
 
         const result = await tutorService.getAllTutors(payload)
-        res.status(201).json(result)
+
+        const tutorData = result.map((item)=>{
+            return{
+                id:item.id,
+                userId:item.userId,
+                category:item.categoryId,
+                name:item.user.name,
+                bio:item.bio,
+                image:item.image,
+                subject:item.subject,
+                experience:item.experience,
+                course_price:item.course_price,
+                avg_rating:item.avg_rating,
+                isFeatured:item.isFeatured,
+                availability:item.availability,
+                reviews:item._count.reviews
+            }
+        })
+
+        res.status(201).json({
+            success:true,
+            data:tutorData
+        })
 
     } catch (error: any) {
         res.status(400).json(
@@ -191,11 +206,7 @@ const getTutorByCategoryId = async (req: Request, res: Response, next: NextFunct
 
     } catch (error: any) {
         res.status(400).json(
-            {
-                success: false,
-                message: error.message,
-                error: error
-            }
+            next(error)
         )
     }
 }

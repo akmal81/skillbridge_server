@@ -163,6 +163,18 @@ return prisma.tutor.findMany(
     {
         where:{
             AND:andConditions
+        },
+        include:{
+            user:{
+                select:{
+                    name:true
+                }
+            },
+            _count:{
+               select:{
+                reviews:true
+               }
+            }
         }
     }
 )

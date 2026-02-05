@@ -7,8 +7,10 @@ const router = Router()
 
 
 // putlic tutor route
-// *Browse and search tutors by subject, rating, and price
-router.get('/', tutorController.getAllTutors)
+//* featured for landing page
+router.get('/featured', tutorController.getTutorFeatured)
+
+
 
 // *View detailed tutor profiles with reviews
 router.get('/:tutorId', tutorController.getTutorById)
@@ -16,8 +18,11 @@ router.get('/:tutorId', tutorController.getTutorById)
 // * Filter tutors by category
 router.get('/bycategory/:categoryId', tutorController.getTutorByCategoryId)
 
-//* featured for landing page
-router.get('/featured', tutorController.getTutorFeatured)
+
+// *Browse and search tutors by subject, rating, and price
+router.get('/', tutorController.getAllTutors)
+
+
 
 
 

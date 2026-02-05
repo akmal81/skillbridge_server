@@ -7,6 +7,8 @@ import { tutorRoutes } from "./modules/tutor/tutor.router";
 import { bookingRoutes } from "./modules/bookings/booking.router";
 import { reviewsRoutes } from "./modules/review/reviews.router";
 import { studentsRoutes } from "./modules/students/student.router";
+import errorHandler from "./middleWare/globalErrorHandler";
+import { notFound } from "./middleWare/notFounds";
 
 
 const app:Application = express();
@@ -42,6 +44,9 @@ app.use('/api/v1/reviews', reviewsRoutes)
 
 app.use('/api/v1/admin', adminRoutes)
 
+// error hadler
+app.use(notFound)
+app.use(errorHandler)
 
 app.get('/', (req, res)=>{
     res.send("hello")
