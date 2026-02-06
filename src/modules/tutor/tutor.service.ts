@@ -112,7 +112,8 @@ const updateTimeSlot = async (
 //? Browse and search tutors by subject, rating, and price
 
 const getAllTutors = async (payload: {
-    search?: string
+   
+    subject?:string
     rating?: number
     price?: number
     category?: string
@@ -123,10 +124,18 @@ const getAllTutors = async (payload: {
     const andConditions: TutorWhereInput[]=[]
 
 
-    if (payload.search) {
+    // if (payload.search) {
+    //     andConditions.push({
+    //         subject: {
+    //             contains: payload.search,
+    //             mode: "insensitive"
+    //         }
+    //     })
+    // }
+    if (payload.subject) {
         andConditions.push({
             subject: {
-                contains: payload.search,
+                contains: payload.subject,
                 mode: "insensitive"
             }
         })
@@ -218,6 +227,18 @@ const getTutorFeatured=async function () {
         {
             where:{
                 isFeatured:true
+            },
+            include:{
+                user:{
+                    select:{
+                        name:true
+                    }
+                },
+                 _count:{
+               select:{
+                bookings:true
+               }
+            }
             }
         }
     )

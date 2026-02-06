@@ -9,6 +9,7 @@ import { reviewsRoutes } from "./modules/review/reviews.router";
 import { studentsRoutes } from "./modules/students/student.router";
 import errorHandler from "./middleWare/globalErrorHandler";
 import { notFound } from "./middleWare/notFounds";
+import { categoryRouter } from "./modules/category/categories.router";
 
 
 const app:Application = express();
@@ -38,6 +39,8 @@ app.use('/api/v1/bookings', bookingRoutes)
 
 // reviews
 app.use('/api/v1/reviews', reviewsRoutes)
+// category
+app.use('/api/v1/categories',categoryRouter)
 
 
 // admin api

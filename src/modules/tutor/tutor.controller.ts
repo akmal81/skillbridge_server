@@ -105,10 +105,11 @@ const updateTimeSlot = async (req: Request, res: Response, next: NextFunction) =
 const getAllTutors = async (req: Request, res: Response, next: NextFunction) => {
     try {
 
-        const { search, rating, price, category, isFeatured, userId } = req.query;
+        const { search,subject, rating, price, category, isFeatured, userId } = req.query;
 
         const payload: {
-            search?: string
+            // search?: string
+            subject?:string
             rating?: number
             price?: number
             category?: string
@@ -118,8 +119,11 @@ const getAllTutors = async (req: Request, res: Response, next: NextFunction) => 
 
 
 
-        if (typeof search === "string") {
-            payload.search = search
+        // if (typeof search === "string") {
+        //     payload.search = search
+        // }
+        if (typeof subject === "string") {
+            payload.subject = subject
         }
 
         if (typeof rating === "string" && !isNaN(Number(rating))) {
@@ -142,7 +146,7 @@ const getAllTutors = async (req: Request, res: Response, next: NextFunction) => 
             return{
                 id:item.id,
                 userId:item.userId,
-                category:item.categoryId,
+                categoryId:item.categoryId,
                 name:item.user.name,
                 bio:item.bio,
                 image:item.image,
@@ -215,7 +219,28 @@ const getTutorByCategoryId = async (req: Request, res: Response, next: NextFunct
 const getTutorFeatured = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const result = await tutorService.getTutorFeatured()
-        res.status(201).json(result)
+       const tutorData = result.map((item)=>{
+            return{
+                id:item.id,
+                userId:item.userId,
+                categoryId:item.categoryId,
+                name:item.user.name,
+                bio:item.bio,
+                image:item.image,
+                subject:item.subject,
+                experience:item.experience,
+                course_price:item.course_price,
+                avg_rating:item.avg_rating,
+                isFeatured:item.isFeatured,
+                availability:item.availability,
+                bookings:item._count.bookings
+            }
+        })
+
+        res.status(201).json({
+            success:true,
+            data:tutorData
+        })
 
     } catch (error: any) {
         res.status(400).json(
