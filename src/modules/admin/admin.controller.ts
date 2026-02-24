@@ -68,7 +68,7 @@ const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
 const banUnban = async (req: Request, res: Response, next: NextFunction) => {
     try {
         
-          const result = await adminService.banUnban(req.params.id as string)
+          const result = await adminService.banUnban(req.params.userId as string)
         res.status(201).json(result)
         
     } catch (error:any) {

@@ -173,12 +173,12 @@ return prisma.tutor.findMany(
         where:{
             AND:andConditions
         },
-        include:{
+       include:{
             user:{
                 select:{
                     name:true
                 }
-            },
+            }, 
             _count:{
                select:{
                 reviews:true
@@ -203,7 +203,11 @@ const getTutorById = async (tutorId:string) => {
                         name:true
                     }
                 },
-                reviews:true
+               _count:{
+                select:{
+                    reviews:true
+                }
+               }
             }
         }
     )
@@ -215,7 +219,19 @@ const getTutorByCategoryId = async (categoryId:string) => {
         {
             where:{
                 categoryId: categoryId
+            },
+             include:{
+            user:{
+                select:{
+                    name:true
+                }
+            }, 
+            _count:{
+               select:{
+                reviews:true
+               }
             }
+        }
         }
     )
 }

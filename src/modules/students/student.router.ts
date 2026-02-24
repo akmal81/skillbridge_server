@@ -4,6 +4,7 @@ import { studentController } from "./student.controller";
 
 const router = Router();
 
+router.get('/:studentId', auth(UserRole.STUDENT), studentController.getStudentById)
 router.patch('/:studentId', auth(UserRole.STUDENT), studentController.updateStudentProfile)
 
 export const studentsRoutes = router;

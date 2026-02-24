@@ -76,7 +76,22 @@ const getReviewByTutorId= async (tutorId:string) => {
     )
     
 }
+
+const getAllReviews = async()=>{
+    return await prisma.reviews.findMany({
+        take:4,
+        include:{
+            student:{
+                select:{
+
+                    name:true
+                }
+            },
+        }
+    })
+}
 export const reviewsService ={
     createReview,
-    getReviewByTutorId
+    getReviewByTutorId,
+    getAllReviews
 }

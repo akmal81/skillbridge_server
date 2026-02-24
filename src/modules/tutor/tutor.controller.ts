@@ -20,7 +20,7 @@ const createTutorProfile = async (req: Request, res: Response, next: NextFunctio
 
     } catch (error: any) {
         res.status(400).json(
-           next(error)
+            next(error)
         )
     }
 }
@@ -44,7 +44,7 @@ const updateTutorProfile = async (req: Request, res: Response, next: NextFunctio
 
     } catch (error: any) {
         res.status(400).json(
-           next(error)
+            next(error)
         )
     }
 }
@@ -105,11 +105,11 @@ const updateTimeSlot = async (req: Request, res: Response, next: NextFunction) =
 const getAllTutors = async (req: Request, res: Response, next: NextFunction) => {
     try {
 
-        const { search,subject, rating, price, category, isFeatured, userId } = req.query;
+        const { search, subject, rating, price, category, isFeatured, userId } = req.query;
 
         const payload: {
             // search?: string
-            subject?:string
+            subject?: string
             rating?: number
             price?: number
             category?: string
@@ -142,27 +142,27 @@ const getAllTutors = async (req: Request, res: Response, next: NextFunction) => 
 
         const result = await tutorService.getAllTutors(payload)
 
-        const tutorData = result.map((item)=>{
-            return{
-                id:item.id,
-                userId:item.userId,
-                categoryId:item.categoryId,
-                name:item.user.name,
-                bio:item.bio,
-                image:item.image,
-                subject:item.subject,
-                experience:item.experience,
-                course_price:item.course_price,
-                avg_rating:item.avg_rating,
-                isFeatured:item.isFeatured,
-                availability:item.availability,
-                reviews:item._count.reviews
+        const tutorData = result.map((item) => {
+            return {
+                id: item.id,
+                userId: item.userId,
+                categoryId: item.categoryId,
+                name: item.user.name,
+                bio: item.bio,
+                image: item.image,
+                subject: item.subject,
+                experience: item.experience,
+                course_price: item.course_price,
+                avg_rating: item.avg_rating,
+                isFeatured: item.isFeatured,
+                availability: item.availability,
+                reviews: item._count.reviews
             }
         })
 
         res.status(201).json({
-            success:true,
-            data:tutorData
+            success: true,
+            data: tutorData
         })
 
     } catch (error: any) {
@@ -184,10 +184,20 @@ const getTutorById = async (req: Request, res: Response, next: NextFunction) => 
 
 
         const { tutorId } = req.params
-        const result = await tutorService.getTutorById(tutorId as string)
-        res.status(201).json(result)
+        const result = await tutorService.getTutorById(tutorId as string);
 
-    } catch (error: any) {
+        const formateddata = {
+            ...result,
+            name: result?.user.name,
+            reviews: result?._count.reviews,
+            user:undefined,
+            _count:undefined
+        }
+
+        res.status(201).json(formateddata)
+    }
+
+    catch (error: any) {
         res.status(400).json(
             {
                 success: false,
@@ -199,15 +209,38 @@ const getTutorById = async (req: Request, res: Response, next: NextFunction) => 
 }
 
 
+
 const getTutorByCategoryId = async (req: Request, res: Response, next: NextFunction) => {
     try {
 
-       
-        const { categoryId } = req.params
-        console.log(categoryId)
-        const result = await tutorService.getTutorByCategoryId(categoryId as string)
-        res.status(201).json(result)
 
+        const { categoryId } = req.params
+    
+        const result = await tutorService.getTutorByCategoryId(categoryId as string)
+       
+       const tutorData = result.map((item) => {
+            return {
+                id: item.id,
+                userId: item.userId,
+                categoryId: item.categoryId,
+                name: item.user.name,
+                bio: item.bio,
+                image: item.image,
+                subject: item.subject,
+                experience: item.experience,
+                course_price: item.course_price,
+                avg_rating: item.avg_rating,
+                isFeatured: item.isFeatured,
+                availability: item.availability,
+                reviews: item._count.reviews
+            }
+        })
+
+       
+        res.status(201).json({
+            success: true,
+            data: tutorData
+        })
     } catch (error: any) {
         res.status(400).json(
             next(error)
@@ -219,27 +252,27 @@ const getTutorByCategoryId = async (req: Request, res: Response, next: NextFunct
 const getTutorFeatured = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const result = await tutorService.getTutorFeatured()
-       const tutorData = result.map((item)=>{
-            return{
-                id:item.id,
-                userId:item.userId,
-                categoryId:item.categoryId,
-                name:item.user.name,
-                bio:item.bio,
-                image:item.image,
-                subject:item.subject,
-                experience:item.experience,
-                course_price:item.course_price,
-                avg_rating:item.avg_rating,
-                isFeatured:item.isFeatured,
-                availability:item.availability,
-                bookings:item._count.bookings
+        const tutorData = result.map((item) => {
+            return {
+                id: item.id,
+                userId: item.userId,
+                categoryId: item.categoryId,
+                name: item.user.name,
+                bio: item.bio,
+                image: item.image,
+                subject: item.subject,
+                experience: item.experience,
+                course_price: item.course_price,
+                avg_rating: item.avg_rating,
+                isFeatured: item.isFeatured,
+                availability: item.availability,
+                bookings: item._count.bookings
             }
         })
 
         res.status(201).json({
-            success:true,
-            data:tutorData
+            success: true,
+            data: tutorData
         })
 
     } catch (error: any) {

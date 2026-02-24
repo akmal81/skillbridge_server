@@ -44,13 +44,25 @@ const getAllUsers = async () => {
 
 
 const banUnban = async (userId: string) => {
+
+    const user = await prisma.user.findUnique({
+        where: {
+            id: userId
+        },
+        select:{isBan:true}
+    })
+
+    if (!user){
+        throw new Error("User Not found");
+        
+    }
     return await prisma.user.update(
         {
             where: {
                 id: userId
             },
             data: {
-                isBan: true
+                isBan: !user.isBan
             }
         }
     )

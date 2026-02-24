@@ -7,20 +7,20 @@ import { categoryService } from "./categories.service";
 const getCategories = async (req: Request, res: Response) => {
 
     try {
-    
+
         const result = await categoryService.getCategories()
 
-         const data = result.map((item)=>{
-            return{
-                id:item.id,
+        const data = result.map((item) => {
+            return {
+                id: item.id,
                 catName: item.catName,
-                tutors:item._count.tutors
+                tutors: item._count.tutors
             }
         })
 
         res.status(201).json({
-            success:true,
-            data:data
+            success: true,
+            data: data
         })
     } catch (error: any) {
         res.status(400).json(
@@ -32,9 +32,6 @@ const getCategories = async (req: Request, res: Response) => {
         )
     }
 }
-
-
-
 
 
 export const categoryController = {

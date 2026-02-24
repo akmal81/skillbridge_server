@@ -21,7 +21,17 @@ const updateStudentProfile = async (
     return result
 }
 
+const getStudentById = async (studentId: string) => {
+    const result = await prisma.user.findUniqueOrThrow({
+        where: {
+            id: studentId
+        }
+    })
+    return result
+}
+
 
 export const studentService = {
-    updateStudentProfile
+    updateStudentProfile,
+    getStudentById
 }

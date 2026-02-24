@@ -62,10 +62,35 @@ const getReviewByTutorId = async (req:Request, res:Response) => {
 }
 
 
+const getALlReview = async (req:Request, res:Response) => {
+
+     try {
+         
+
+    const result  = await reviewsService.getAllReviews();
+
+    
+    
+            res.status(201).json(result)
+        } catch (error: any) {
+            res.status(400).json(
+                {
+                    success: false,
+                    message: error.message,
+                    error: error
+                }
+            )
+        }
+}
+
+
+
+
 
 
 
 export const reviewsController = {
     createReview,
-    getReviewByTutorId
+    getReviewByTutorId,
+    getALlReview
 }
