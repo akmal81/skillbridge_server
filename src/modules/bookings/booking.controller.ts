@@ -61,8 +61,44 @@ const getBookingsStudentId = async (req: Request, res: Response, next: NextFunct
             }
          
 
-const {tutorId} = req.params
+const {studentId} = req.params
         const result = await bookingService.getBookingsStudentId(
+           studentId as string
+        )
+
+        res.status(201).json(result)
+    } catch (error: any) {
+        res.status(400).json(
+            {
+                success: false,
+                message: error.message,
+                error: error
+            }
+        )
+    }
+}
+const getBookingsTutorId = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
+
+       const user = req.user
+        if (!user) {
+            return res.status(400).json(
+                {
+                    error: "Unauthorized!!"
+                })
+        }
+      if (user?.role !== UserRole.TUTOR) {
+                return res.status(400).json(
+                    {
+                        error: "Please Register as a Student",
+                    }
+                )
+            }
+         
+
+const {tutorId} = req.params
+        const result = await bookingService.getBookingsTutorId(
            tutorId as string
         )
 
@@ -83,5 +119,6 @@ const {tutorId} = req.params
 
 export const bookingController ={
     createBooking,
-    getBookingsStudentId
+    getBookingsStudentId,
+    getBookingsTutorId
 }
