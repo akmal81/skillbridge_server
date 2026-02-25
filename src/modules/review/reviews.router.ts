@@ -4,7 +4,9 @@ import { reviewsController } from "./reviews.controller";
 
 const router =Router();
 // tutor see rating and reviews
-router.get('/:tutorId', auth(UserRole.TUTOR), reviewsController.getReviewByTutorId)
+router.get('/:tutorId',
+    //  auth(UserRole.TUTOR), 
+     reviewsController.getReviewByTutorId)
 router.get('/', reviewsController.getALlReview)
 
 

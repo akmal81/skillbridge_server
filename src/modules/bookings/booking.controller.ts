@@ -115,10 +115,97 @@ const {tutorId} = req.params
 }
 
 
+const updateBookingbyStudent = async (req: Request, res: Response, next: NextFunction) => {
+
+
+  try {
+
+
+       const user = req.user
+        if (!user) {
+            return res.status(400).json(
+                {
+                    error: "Unauthorized!!"
+                })
+        }
+      if (user?.role !== UserRole.STUDENT) {
+                return res.status(400).json(
+                    {
+                        error: "Please Register as a Student",
+                    }
+                )
+            }
+         
+
+const {bookingId}  = req.params
+        const result = await bookingService.updateBookingbyStudent(
+           bookingId as string
+        )
+
+        res.status(201).json(result)
+    } catch (error: any) {
+        res.status(400).json(
+            {
+                success: false,
+                message: error.message,
+                error: error
+            }
+        )
+    }
+}
+
+
+
+
+const updateBookingbyTutor = async (req: Request, res: Response, next: NextFunction) => {
+
+
+  try {
+
+
+       const user = req.user
+        if (!user) {
+            return res.status(400).json(
+                {
+                    error: "Unauthorized!!"
+                })
+        }
+      if (user?.role !== UserRole.TUTOR) {
+                return res.status(400).json(
+                    {
+                        error: "Please Register as a Student",
+                    }
+                )
+            }
+         
+
+const {tutorId, bookingId, studentId} = req.body
+
+        const result = await bookingService.updateBookingbyTutor(
+          req.body
+        )
+
+        res.status(201).json(result)
+    } catch (error: any) {
+        res.status(400).json(
+            {
+                success: false,
+                message: error.message,
+                error: error
+            }
+        )
+    }
+}
+
+
+
+
 
 
 export const bookingController ={
     createBooking,
     getBookingsStudentId,
-    getBookingsTutorId
+    getBookingsTutorId,
+    updateBookingbyStudent,
+    updateBookingbyTutor
 }

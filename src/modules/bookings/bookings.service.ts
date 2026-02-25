@@ -97,14 +97,29 @@ const getBookingsTutorId = async (tutorId: string) => {
 }
 
 
-const updateBooking = async (payload: { studentId: string, tutorId?: string, timeSlotId?: string }) => {
+const updateBookingbyStudent = async (bookingId: string) => {
 
     const result = await prisma.bookings.updateMany({
         where: {
-            studentId: payload.studentId
+            id: bookingId
         },
         data: {
             status: "CANCELLED"
+        }
+    })
+
+    return result
+}
+const updateBookingbyTutor = async (payload: { studentId: string, tutorId: string, bookingId: string }) => {
+
+    const result = await prisma.bookings.updateMany({
+        where: {
+            tutorId: payload.tutorId,
+            studentId: payload.studentId,
+            id: payload.bookingId
+        },
+        data: {
+            status: "CONFIRMED"
         }
     })
 
@@ -116,5 +131,7 @@ export const bookingService = {
     createBooking,
     getBookingsStudentId,
     getBookingsTutorId,
-    updateBooking
+    updateBookingbyStudent,
+    updateBookingbyTutor
+
 }

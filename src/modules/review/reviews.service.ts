@@ -1,6 +1,6 @@
 import { prisma } from "../../lib/prisma"
 
-const createReview = async (payload:{tutorId:string, studentId:string,
+/* const createReview = async (payload:{tutorId:string, studentId:string,
     review:string, rating:string |number
 }) => {
 
@@ -64,7 +64,99 @@ return {newResult, status}
 
 return result
     
-}
+} */
+/* const createReview = async (payload: { tutorId: string, studentId: string, review: string, rating: string | number }) => {
+
+const numericRating = Number(payload.rating);
+
+const result = await prisma.$transaction(async (tx) => {
+
+   
+    await tx.bookings.findFirstOrThrow({
+        where: {
+            studentId: payload.studentId,
+            tutorId: payload.tutorId,
+            status: "COMPLETED"
+        }
+    });
+
+ 
+    const newResult = await tx.reviews.create({
+        data: {
+            review: payload.review,
+            rating: numericRating,
+            student: {
+                connect: { id: payload.studentId }
+            },
+            tutor: {
+                connect: { id: payload.tutorId }
+            }
+        }
+    });
+
+   
+    const stats = await tx.reviews.aggregate({
+        where: { tutorId: payload.tutorId },
+        _avg: { rating: true },
+        _count: { rating: true }
+    });
+
+    
+    await tx.tutor.update({
+        where: { id: payload.tutorId },
+        data: {
+            avg_rating: stats._avg.rating || 0
+        }
+    });
+
+    return { newResult, stats };
+});
+
+return result;
+} */
+const createReview = async (payload: { 
+    tutorId: string, 
+    studentId: string, 
+    review: string, 
+    rating: string | number 
+}) => {
+    const numericRating = Number(payload.rating);
+
+    return await prisma.$transaction(async (tx) => {
+       
+        await tx.bookings.findFirstOrThrow({
+            where: {
+                studentId: payload.studentId,
+                tutorId: payload.tutorId,
+                status: "COMPLETED"
+            }
+        });
+
+        
+        const newResult = await tx.reviews.create({
+            data: {
+                review: payload.review,
+                rating: numericRating,
+                
+                student: { connect: { id: payload.studentId } },
+                tutor: { connect: { id: payload.tutorId } }
+            }
+        });
+
+        
+        const stats = await tx.reviews.aggregate({
+            where: { tutorId: payload.tutorId },
+            _avg: { rating: true }
+        });
+
+        await tx.tutor.update({
+            where: { id: payload.tutorId },
+            data: { avg_rating: stats._avg.rating || 0 }
+        });
+
+        return newResult;
+    });
+};
 const getReviewByTutorId= async (tutorId:string) => {
 
     return await prisma.reviews.findMany(
