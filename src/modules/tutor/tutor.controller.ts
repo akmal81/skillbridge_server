@@ -286,7 +286,24 @@ const getTutorFeatured = async (req: Request, res: Response, next: NextFunction)
     }
 }
 
+const getTutorByUserId = async(req: Request, res: Response, next: NextFunction)=>{
 
+    try {
+        
+
+        const {userId} = req.params
+        const result = await tutorService.getTutorByUserId(userId as string)
+        res.status(201).json(result)
+    } catch (error:any) {
+         res.status(400).json(
+            {
+                success: false,
+                message: error.message,
+                error: error
+            }
+        )
+    }
+}
 
 export const tutorController = {
     createTutorProfile,
@@ -296,5 +313,6 @@ export const tutorController = {
     getAllTutors,
     getTutorById,
     getTutorByCategoryId,
-    getTutorFeatured
+    getTutorFeatured,
+    getTutorByUserId
 }

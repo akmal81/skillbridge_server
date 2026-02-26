@@ -22,7 +22,7 @@ router.get('/bycategory/:categoryId', tutorController.getTutorByCategoryId)
 // *Browse and search tutors by subject, rating, and price
 router.get('/', tutorController.getAllTutors)
 
-
+router.get('/user/:userId', tutorController.getTutorByUserId)
 
 
 
