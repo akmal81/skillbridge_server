@@ -15,6 +15,8 @@ router.get('/featured', tutorController.getTutorFeatured)
 // *View detailed tutor profiles with reviews
 router.get('/:tutorId', tutorController.getTutorById)
 
+router.get('/time-slot/:tutorId', auth(UserRole.TUTOR), tutorController.getTimeSlotsByTutorId)
+
 // * Filter tutors by category
 router.get('/bycategory/:categoryId', tutorController.getTutorByCategoryId)
 

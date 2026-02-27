@@ -114,16 +114,16 @@ const result = await prisma.$transaction(async (tx) => {
 
 return result;
 } */
-const createReview = async (payload: { 
-    tutorId: string, 
-    studentId: string, 
-    review: string, 
-    rating: string | number 
+const createReview = async (payload: {
+    tutorId: string,
+    studentId: string,
+    review: string,
+    rating: string | number
 }) => {
     const numericRating = Number(payload.rating);
 
     return await prisma.$transaction(async (tx) => {
-       
+
         await tx.bookings.findFirstOrThrow({
             where: {
                 studentId: payload.studentId,
@@ -132,18 +132,18 @@ const createReview = async (payload: {
             }
         });
 
-        
+
         const newResult = await tx.reviews.create({
             data: {
                 review: payload.review,
                 rating: numericRating,
-                
+
                 student: { connect: { id: payload.studentId } },
                 tutor: { connect: { id: payload.tutorId } }
             }
         });
 
-        
+
         const stats = await tx.reviews.aggregate({
             where: { tutorId: payload.tutorId },
             _avg: { rating: true }
@@ -157,32 +157,41 @@ const createReview = async (payload: {
         return newResult;
     });
 };
-const getReviewByTutorId= async (tutorId:string) => {
+const getReviewByTutorId = async (tutorId: string) => {
 
     return await prisma.reviews.findMany(
         {
-            where:{
+            where: {
                 tutorId
+            },
+            include: {
+                student: {
+                    select: {
+                        name: true,
+                        image: true
+                    }
+                }
             }
         }
     )
-    
+
 }
 
-const getAllReviews = async()=>{
+const getAllReviews = async () => {
     return await prisma.reviews.findMany({
-        take:4,
-        include:{
-            student:{
-                select:{
+        take: 4,
+        include: {
+            student: {
+                select: {
 
-                    name:true
+                    name: true,
+                    image: true
                 }
             },
         }
     })
 }
-export const reviewsService ={
+export const reviewsService = {
     createReview,
     getReviewByTutorId,
     getAllReviews

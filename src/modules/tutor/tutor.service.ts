@@ -79,6 +79,17 @@ const createTimeSlot = async (
     }
 }
 
+const getTimeSlotsByTutorId = async (tutorId: string) => {
+
+    return await prisma.timeSlot.findMany(
+        {
+            where: {
+                tutorId
+            }
+        }
+    )   
+}
+
 // set avaiablelity /upadate time slot
 const updateTimeSlot = async (
     payload: Partial<TimeSlot>,
@@ -281,5 +292,6 @@ export const tutorService = {
     getTutorById,
     getTutorByCategoryId,
     getTutorFeatured,
-    getTutorByUserId
+    getTutorByUserId,
+    getTimeSlotsByTutorId
 }

@@ -61,9 +61,34 @@ const createTimeSlot = async (req: Request, res: Response, next: NextFunction) =
                     error: "Unauthorized!!"
                 })
         }
-        console.log(user.id)
+   
 
         const result = await tutorService.createTimeSlot(req.body, user.id as string)
+        res.status(201).json(result)
+
+    } catch (error: any) {
+        res.status(400).json(
+            {
+                success: false,
+                message: error.message,
+                error: error
+            }
+        )
+    }
+}
+const getTimeSlotsByTutorId = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const user = req.user
+
+        if (user?.role !== 'TUTOR') {
+            return res.status(400).json(
+                {
+                    error: "Unauthorized!!"
+                })
+        }
+        const {tutorId} = req.params
+
+        const result = await tutorService.getTimeSlotsByTutorId(tutorId as string)
         res.status(201).json(result)
 
     } catch (error: any) {
@@ -314,5 +339,6 @@ export const tutorController = {
     getTutorById,
     getTutorByCategoryId,
     getTutorFeatured,
-    getTutorByUserId
+    getTutorByUserId,
+    getTimeSlotsByTutorId
 }

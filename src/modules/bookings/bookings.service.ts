@@ -1,4 +1,5 @@
 
+import { BookingStatus } from "../../../generated/prisma/enums"
 import { prisma } from "../../lib/prisma"
 
 const createBooking = async (
@@ -110,6 +111,29 @@ const updateBookingbyStudent = async (bookingId: string) => {
 
     return result
 }
+const completeBooking = async (bookingId: string, status: BookingStatus) => {
+    return await prisma.$transaction(async (tx) => {
+        // ১. বুকিং স্ট্যাটাস আপডেট করা
+        const updatedBooking = await tx.bookings.update({
+            where: { id: bookingId },
+            data: { status: status },
+            include: { timeSlot: true } 
+        });
+
+       
+        if (status === "COMPLETED" || status === "CANCELLED") {
+            await tx.timeSlot.update({
+                where: { id: updatedBooking.timeSlotId },
+                data: { 
+                    isBooked: false, 
+                    availability: true 
+                }
+            });
+        }
+
+        return updatedBooking;
+    });
+};
 const updateBookingbyTutor = async (payload: { studentId: string, tutorId: string, bookingId: string }) => {
 
     const result = await prisma.bookings.updateMany({
@@ -132,6 +156,7 @@ export const bookingService = {
     getBookingsStudentId,
     getBookingsTutorId,
     updateBookingbyStudent,
-    updateBookingbyTutor
+    updateBookingbyTutor,
+    completeBooking
 
 }
