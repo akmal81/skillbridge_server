@@ -63,7 +63,7 @@ const createTimeSlot = async (req: Request, res: Response, next: NextFunction) =
         }
    
 
-        const result = await tutorService.createTimeSlot(req.body, user.id as string)
+        const result = await tutorService.createTimeSlot(req.body)
         res.status(201).json(result)
 
     } catch (error: any) {
@@ -122,6 +122,32 @@ const updateTimeSlot = async (req: Request, res: Response, next: NextFunction) =
         )
     }
 }
+const deleteTimeSlot = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const user = req.user
+
+        if (user?.role !== 'TUTOR') {
+            return res.status(400).json(
+                {
+                    error: "Unauthorized!!"
+                })
+        }
+        const { slotId } = req.params
+
+        const result = await tutorService.deleteTimeSlot(slotId as string)
+        res.status(201).json(result)
+
+    } catch (error: any) {
+        res.status(400).json(
+            {
+                success: false,
+                message: error.message,
+                error: error
+            }
+        )
+    }
+}
+
 
 
 
@@ -340,5 +366,6 @@ export const tutorController = {
     getTutorByCategoryId,
     getTutorFeatured,
     getTutorByUserId,
-    getTimeSlotsByTutorId
+    getTimeSlotsByTutorId,
+    deleteTimeSlot
 }

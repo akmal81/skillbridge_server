@@ -47,36 +47,45 @@ const updateTutorProfile = async (
 // set or create availability slot in the timeSlot table
 
 const createTimeSlot = async (
-    payload: Omit<TimeSlot, "id" | "tutorId" | "availability">,
-    userId: string
+    payload: Omit<TimeSlot, "id"  |"isBooked"| "availability">,
+  
 ) => {
 
-    await prisma.user.findUniqueOrThrow(
-        {
-            where: { id: userId }
-        }
-    )
+  
 
-    const tutor = await prisma.tutor.findUniqueOrThrow(     //??????????????
+    const tutor = await prisma.tutor.findUniqueOrThrow(    
         {
             where: {
-                userId
+                id: payload.tutorId
             },
 
         }
     )
 
 
-    if (tutor) {
-        return await prisma.timeSlot.create(
-            {
-                data: {
-                    ...payload,
-                    tutorId: tutor.id
-                }
-            }
-        )
-    }
+    // if (tutor) {
+    //     return await prisma.timeSlot.create(
+    //         {
+    //             data: {
+    //                 ...payload,
+    //                 // tutorId: tutor.id,
+    //             }
+    //         }
+    //     )
+    // }
+
+
+return await prisma.timeSlot.create({
+        data: {
+            tutorId: payload.tutorId,
+           date: new Date(payload.date), 
+            startTime: new Date(payload.startTime),
+            endTime: new Date(payload.endTime),
+            // isBooked: false,
+            // availability: true,
+        },
+    });
+
 }
 
 const getTimeSlotsByTutorId = async (tutorId: string) => {
@@ -84,8 +93,15 @@ const getTimeSlotsByTutorId = async (tutorId: string) => {
     return await prisma.timeSlot.findMany(
         {
             where: {
-                tutorId
-            }
+            tutorId,
+           
+            endTime: {
+                gte: new Date(), 
+            },
+        },
+        orderBy: {
+            startTime: 'asc', 
+        },
         }
     )   
 }
@@ -118,6 +134,25 @@ const updateTimeSlot = async (
     )
 }
 
+
+const deleteTimeSlot = async (slotId: string) => {
+
+    await prisma.bookings.findFirstOrThrow(
+        {
+            where: {
+                timeSlotId: slotId
+            }
+        }
+    )
+
+    return await prisma.timeSlot.delete(
+        {
+            where: {
+                id: slotId
+            }
+        }
+    )
+}
 
 // get all tutor
 //? Browse and search tutors by subject, rating, and price
@@ -209,6 +244,18 @@ const getTutorById = async (tutorId:string) => {
                 id: tutorId
             },
             include:{
+                timeSlots:{
+                    where:{
+                        startTime:{
+                            gte: new Date()
+                        },
+                        isBooked: false,
+                        availability: true
+                    },
+                    orderBy: {
+                        startTime: 'asc'
+                    }
+                },
                 user:{
                     select:{
                         name:true
@@ -293,5 +340,6 @@ export const tutorService = {
     getTutorByCategoryId,
     getTutorFeatured,
     getTutorByUserId,
-    getTimeSlotsByTutorId
+    getTimeSlotsByTutorId,
+    deleteTimeSlot
 }

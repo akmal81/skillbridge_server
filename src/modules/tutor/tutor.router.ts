@@ -36,4 +36,7 @@ router.patch('/:tutorId', auth(UserRole.TUTOR), tutorController.updateTutorProfi
 router.post('/time-slot', auth(UserRole.TUTOR), tutorController.createTimeSlot)
 router.patch('/available/:slotId', auth(UserRole.TUTOR), tutorController.updateTimeSlot)
 
+
+router.delete('/deletetimeslot/:slotId', auth(UserRole.TUTOR), tutorController.deleteTimeSlot)
+
 export const tutorRoutes = router

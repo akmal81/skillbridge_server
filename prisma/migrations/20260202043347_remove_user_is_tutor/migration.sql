@@ -5,5 +5,5 @@
 
 */
 -- AlterTable
-ALTER TABLE "user" DROP COLUMN "isTutor",
+-- ALTER TABLE "user" DROP COLUMN "isTutor",
 ALTER COLUMN "role" SET DEFAULT 'STUDENT';

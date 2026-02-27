@@ -103,8 +103,6 @@ model Tutor {
 
   categoryId String //one to many with category
   category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  name String?
-  email String?
 
   bio          String
   image        String?
@@ -130,7 +128,7 @@ model TimeSlot {
   tutorId String
   tutor   Tutor  @relation(fields: [tutorId], references: [id], onDelete: Cascade)
 
-  date      DateTime
+  dates      String
   startTime DateTime
   endTime   DateTime
   isBooked  Boolean   @default(false)
@@ -160,8 +158,8 @@ model Bookings {
   student    User          @relation(fields: [studentId], references: [id])
   tutorId    String //many to one with tutor
   tutor      Tutor         @relation(fields: [tutorId], references: [id])
-  timeSlotId String         @unique//one to one with timeslot
-  timeSlot   TimeSlot      @relation(fields: [timeSlotId], references: [id])
+  timeSlotId String         //one to one with timeslot
+  timeSlot   TimeSlot      @relation(fields: [timeSlotId], references: [id], onDelete: Cascade)
   status     BookingStatus @default(PENDING)
 }
 

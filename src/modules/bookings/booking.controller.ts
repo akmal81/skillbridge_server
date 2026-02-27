@@ -21,7 +21,7 @@ const createBooking = async (req: Request, res: Response, next: NextFunction) =>
                 }
             )
         }
-        req.body.studentId = req.user?.id
+        // req.body.studentId = req.user?.id
 
 
 
