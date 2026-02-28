@@ -2,10 +2,9 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "bundler",
+    "moduleResolution": "Bundler",
     "rootDir": "./",             // এটি রুট ফোল্ডার থেকে ফাইল খোঁজা শুরু করবে
     "outDir": "./dist",
-    "types": ["node"],
     "esModuleInterop": true,
     "strict": false,             // সাময়িকভাবে এটি false করলে 'any' টাইপ এররগুলো চলে যাবে
     "skipLibCheck": true,
