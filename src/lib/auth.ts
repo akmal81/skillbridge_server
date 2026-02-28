@@ -18,34 +18,20 @@ export const auth = betterAuth({
         "http://localhost:3000"
     ],
 
-    session: {
-        expiresIn: 60 * 60 * 24 * 7, // ১ সপ্তাহ (এটি যোগ করুন)
-        updateAge: 60 * 60 * 24,    // ১ দিন
-        cookieCache: {
-            enabled: true,
-            maxAge: 5 * 60,
-        },
+   advanced: {
+       useSecureCookies: true, // এটি নিশ্চিত করুন
     },
-
-
-
-    advanced: {
-        // এই অংশটি গুরুত্বপূর্ণ
-        useSecureCookies: true, // প্রোডাকশনে অবশ্যই true
-        crossSite: true,        // এটি নিশ্চিত করুন
-    },
-
-
-
-
-
     cookie: {
-        crossSite: true,
-        sameSite: "none",
-        secure: true,
+        // এই তিনটি লাইনই হলো আসল সমাধান
+        sameSite: "none", 
+        secure: true,     
         httpOnly: true,
     },
-
+    session: {
+        cookieCache: {
+            enabled: false, // সাময়িকভাবে এটি অফ করে দেখুন সেশন পারসিস্ট করে কি না
+        }
+    },
 
     basePath: "/api/auth",
 
