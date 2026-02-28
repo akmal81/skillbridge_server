@@ -84,7 +84,7 @@ app.use('/api/v1/admin', adminRoutes)
 app.use(notFound)
 app.use(errorHandler)
 
-app.get('/', (req, res)=>{
+app.get('/', (req:any, res:any)=>{
     res.send("hello")
 })
 
