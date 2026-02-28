@@ -2,9 +2,12 @@
   "name": "skillbridge",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "api/index.mjs",
   "scripts": {
     "dev": "npx tsx watch src/server.ts",
+    "build": "prisma generate && tsc",
+    "start": "node dist/server.js",
+    "postinstall": "prisma generate",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -17,6 +20,7 @@
     "@types/node": "^25.2.0",
     "@types/pg": "^8.16.0",
     "prisma": "^7.3.0",
+    "tsup": "^8.5.1",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   },

@@ -128,7 +128,7 @@ model TimeSlot {
   tutorId String
   tutor   Tutor  @relation(fields: [tutorId], references: [id], onDelete: Cascade)
 
-  dates      String
+  date      DateTime
   startTime DateTime
   endTime   DateTime
   isBooked  Boolean   @default(false)
