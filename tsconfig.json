@@ -7,7 +7,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "strict": false,
-    "types": ["node"] // এটি টাইপস্ক্রিপ্টকে 'process' চিনতে সাহায্য করবে
+    "types": ["module"] // এটি টাইপস্ক্রিপ্টকে 'process' চিনতে সাহায্য করবে
   },
   "include": ["src/**/*", "generated/**/*"],
   "exclude": ["node_modules", "dist"]
