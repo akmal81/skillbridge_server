@@ -22,8 +22,8 @@ const app:Application = express();
 // ))
 
 const allowedOrigins = [
-  process.env.APP_URL || "http://localhost:4000",
-  process.env.PROD_APP_URL, // Production frontend URL
+  process.env.APP_URL || "https://skillbridge-client-rouge.vercel.app/",
+  process.env.PROD_APP_URL || "https://skillbridge-client-rouge.vercel.app/", // Production frontend URL
   "http://localhost:3000",
   "http://localhost:4000",
   "http://localhost:5000",

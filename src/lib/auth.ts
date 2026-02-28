@@ -12,7 +12,7 @@ export const auth = betterAuth({
         process.env.APP_URL!,
         process.env.PROD_APP_URL!,
         "https://skillbridge-client-jy8514m9q-akmal-hossains-projects.vercel.app",
-        "https://skillbridge-client-rdlkqgaqv-akmal-hossains-projects.vercel.app"
+        "https://skillbridge-client-rouge.vercel.app/"
     ],
     user: {
         additionalFields: {
