@@ -13,11 +13,27 @@ export const auth = betterAuth({
 
 
     trustedOrigins: [
-        process.env.APP_URL,
-        process.env.PROD_APP_URL,
         "https://skillbridge-client-rouge.vercel.app",
-        "http://localhost:3000",
-    ].filter(Boolean) as string[],
+        "https://skillbridge-client-jy8514m9q-akmal-hossains-projects.vercel.app",
+        "http://localhost:3000"
+    ],
+
+    session: {
+        expiresIn: 60 * 60 * 24 * 7, // ১ সপ্তাহ (এটি যোগ করুন)
+        updateAge: 60 * 60 * 24,    // ১ দিন
+        cookieCache: {
+            enabled: true,
+            maxAge: 5 * 60,
+        },
+    },
+
+
+
+    advanced: {
+        // এই অংশটি গুরুত্বপূর্ণ
+        useSecureCookies: true, // প্রোডাকশনে অবশ্যই true
+        crossSite: true,        // এটি নিশ্চিত করুন
+    },
 
 
 
@@ -31,6 +47,7 @@ export const auth = betterAuth({
     },
 
 
+    basePath: "/api/auth",
 
 
 
@@ -62,25 +79,7 @@ export const auth = betterAuth({
         },
     },
 
-    session: {
-        expiresIn: 60 * 60 * 24 * 7, // ১ সপ্তাহ (এটি যোগ করুন)
-        updateAge: 60 * 60 * 24,    // ১ দিন
-        cookieCache: {
-            enabled: true,
-            maxAge: 5 * 60,
-        },
-    },
 
-
-
-    advanced: {
-        // এই অংশটি গুরুত্বপূর্ণ
-        useSecureCookies: true, // প্রোডাকশনে অবশ্যই true
-        crossSite: true,        // এটি নিশ্চিত করুন
-    },
-
-
-    basePath: "/api/auth",
 
 
 });
