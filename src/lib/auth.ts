@@ -12,47 +12,28 @@ export const auth = betterAuth({
 
 
 
-   trustedOrigins: async (request) => {
-    const origin = request?.headers.get("origin");
-
-    const allowedOrigins = [
-      process.env.APP_URL,
-      process.env.PROD_APP_URL,
-      process.env.BETTER_AUTH_URL,
-      "http://localhost:3000",
-      "http://localhost:5000",
-      "https://skillbridge-server-3fua.onrender.com",
-      "https://skillbridge-client-rouge.vercel.app",
-    ].filter(Boolean);
-
-    // Check if origin matches allowed origins or Vercel pattern
-    if (
-      !origin ||
-      allowedOrigins.includes(origin) ||
-      /^https:\/\/.*\.vercel\.app$/.test(origin)
-    ) {
-      return [origin];
-    }
-
-    return [];
-  },
+    trustedOrigins: [
+        process.env.APP_URL,
+        process.env.PROD_APP_URL,
+        "https://skillbridge-client-rouge.vercel.app",
+        "http://localhost:3000",
+    ].filter(Boolean) as string[],
 
 
 
 
-    
+
     cookie: {
-        crossSite: true, 
+        crossSite: true,
         sameSite: "none",
-        secure: true, 
+        secure: true,
         httpOnly: true,
     },
-     
 
 
 
 
-basePath: "/api/auth",
+
 
     user: {
         additionalFields: {
@@ -82,17 +63,24 @@ basePath: "/api/auth",
     },
 
     session: {
-    cookieCache: {
-      enabled: true,
-      maxAge: 5 * 60, // 5 minutes
+        expiresIn: 60 * 60 * 24 * 7, // ১ সপ্তাহ (এটি যোগ করুন)
+        updateAge: 60 * 60 * 24,    // ১ দিন
+        cookieCache: {
+            enabled: true,
+            maxAge: 5 * 60,
+        },
     },
+
+
+
     advanced: {
-    cookiePrefix: "better-auth",
-    useSecureCookies: process.env.NODE_ENV === "production",
-    crossSubDomainCookies: {
-      enabled: false,
+        // এই অংশটি গুরুত্বপূর্ণ
+        useSecureCookies: true, // প্রোডাকশনে অবশ্যই true
+        crossSite: true,        // এটি নিশ্চিত করুন
     },
-    disableCSRFCheck: true, 
-  },
-  },
+
+
+    basePath: "/api/auth",
+
+
 });
