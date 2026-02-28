@@ -1,7 +1,6 @@
 {
   "name": "skillbridge",
   "version": "1.0.0",
-  "type": "module",
   "scripts": {
     "build": "prisma generate && npx tsc",
     "start": "node dist/src/server.js",
