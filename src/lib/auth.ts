@@ -8,7 +8,12 @@ export const auth = betterAuth({
     database: prismaAdapter(prisma, {
         provider: "postgresql", // or "mysql", "postgresql", ...etc
     }),
-    trustedOrigins: [process.env.APP_URL!],
+    trustedOrigins: [
+        process.env.APP_URL!,
+        process.env.PROD_APP_URL!,
+        "https://skillbridge-client-jy8514m9q-akmal-hossains-projects.vercel.app",
+        "https://skillbridge-client-rdlkqgaqv-akmal-hossains-projects.vercel.app"
+    ],
     user: {
         additionalFields: {
             role: {
