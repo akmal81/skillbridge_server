@@ -2,14 +2,13 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "rootDir": "./",             // এটি রুট ফোল্ডার থেকে ফাইল খোঁজা শুরু করবে
+    "moduleResolution": "node", // অথবা "Bundler" যদি আগের সমাধানটি কাজ না করে
     "outDir": "./dist",
     "esModuleInterop": true,
-    "strict": false,             // সাময়িকভাবে এটি false করলে 'any' টাইপ এররগুলো চলে যাবে
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "strict": false,
+    "types": ["node"] // এটি টাইপস্ক্রিপ্টকে 'process' চিনতে সাহায্য করবে
   },
-  "include": ["src/**/*", "generated/**/*"], // প্রিজমা জেনারেটেড ফাইল অন্তর্ভুক্ত করুন
-  "exclude": ["node_modules"]
+  "include": ["src/**/*", "generated/**/*"],
+  "exclude": ["node_modules", "dist"]
 }
