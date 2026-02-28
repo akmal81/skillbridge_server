@@ -14,6 +14,15 @@ export const auth = betterAuth({
         "https://skillbridge-client-jy8514m9q-akmal-hossains-projects.vercel.app",
         "https://skillbridge-client-rouge.vercel.app/"
     ],
+    cookie: {
+        crossSite: true, 
+        sameSite: "none",
+        secure: true, 
+        httpOnly: true,
+    },
+    advanced: {
+       useSecureCookies: true, 
+    },
     user: {
         additionalFields: {
             role: {
@@ -39,5 +48,5 @@ export const auth = betterAuth({
             clientId: process.env.GOOGLE_CLIENT_ID as string,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
         },
-    }
+    },
 });
