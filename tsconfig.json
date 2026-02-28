@@ -2,13 +2,15 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "node", // অথবা "Bundler" যদি আগের সমাধানটি কাজ না করে
+    "moduleResolution": "node",
     "outDir": "./dist",
+    "rootDir": "./",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "strict": false,
-   
+    "typeRoots": ["./node_modules/@types"],
+    "types": ["node"]
   },
-  "include": ["src/**/*", "generated/**/*"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
 }
