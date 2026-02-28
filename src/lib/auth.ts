@@ -14,12 +14,16 @@ export const auth = betterAuth({
         sameSite: "none",
         secure: true,
         httpOnly: true,
+        maxAge: 60 * 60 * 24 * 7,
     },
 
     // ২. সেশন সেটিংস
     session: {
         expiresIn: 60 * 60 * 24 * 7, // ৭ দিন
         updateAge: 60 * 60 * 24,    // ১ দিন
+        cookieCache: {
+            enabled: false, // এটি অনেক সময় ডিফল্ট Lax কুকি পুশ করে
+        }
     },
 
     // ৩. অ্যাডভান্সড অপশনে crossSite এর বদলে এগুলো ব্যবহার করুন
