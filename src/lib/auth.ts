@@ -9,7 +9,7 @@ export const auth = betterAuth({
         provider: "postgresql", // or "mysql", "postgresql", ...etc
     }),
 
-
+baseURL: process.env.BETTER_AUTH_URL || "https://skillbridge-server-3fua.onrender.com",
     cookie: {
         sameSite: "none",
         secure: true,
@@ -35,6 +35,7 @@ export const auth = betterAuth({
     trustedOrigins: [
         "https://skillbridge-client-rouge.vercel.app",
         "https://skillbridge-client-jy8514m9q-akmal-hossains-projects.vercel.app",
+        "http://localhost:3000"
     ],
 
     basePath: "/api/auth",

@@ -20,7 +20,7 @@ const app:Application = express();
 //         credentials:true
 //     }
 // ))
-
+app.set('trust proxy', true)
 app.use(cors({
     origin: "https://skillbridge-client-rouge.vercel.app",
     credentials: true,
@@ -31,7 +31,7 @@ app.use(cors({
 
 app.use(express.json())
 
-app.all("/api/auth/*splat", toNodeHandler(auth), adminRoutes);
+app.all("/api/auth/*splat", toNodeHandler(auth));
 
 // tutor api
 app.use('/api/v1/tutor', tutorRoutes)
