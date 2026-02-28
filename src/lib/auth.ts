@@ -10,28 +10,28 @@ export const auth = betterAuth({
     }),
 
 
+    cookie: {
+        sameSite: "none",
+        secure: true,
+        httpOnly: true,
+    },
 
+    // ২. সেশন সেটিংস
+    session: {
+        expiresIn: 60 * 60 * 24 * 7, // ৭ দিন
+        updateAge: 60 * 60 * 24,    // ১ দিন
+    },
 
+    // ৩. অ্যাডভান্সড অপশনে crossSite এর বদলে এগুলো ব্যবহার করুন
+    advanced: {
+        useSecureCookies: true, // প্রোডাকশনে এটি কুকিকে Secure করবে
+    },
+
+    // ৪. আপনার ডোমেইনগুলো এখানে দিন
     trustedOrigins: [
         "https://skillbridge-client-rouge.vercel.app",
         "https://skillbridge-client-jy8514m9q-akmal-hossains-projects.vercel.app",
-        "http://localhost:3000"
     ],
-
-   advanced: {
-       useSecureCookies: true, // এটি নিশ্চিত করুন
-    },
-    cookie: {
-        // এই তিনটি লাইনই হলো আসল সমাধান
-        sameSite: "none", 
-        secure: true,     
-        httpOnly: true,
-    },
-    session: {
-        cookieCache: {
-            enabled: false, // সাময়িকভাবে এটি অফ করে দেখুন সেশন পারসিস্ট করে কি না
-        }
-    },
 
     basePath: "/api/auth",
 
